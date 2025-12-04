@@ -1,0 +1,10 @@
+export { default as NotFoundPage } from './NotFoundPage';
+export { default as LoginPage } from './Auth/LoginPage';
+export { default as Dashboard } from './Dashboard/Dashboard';
+export { default as FlashcardPage } from './Flashcards/FlashcardPage';
+export { default as FlashcardList } from './Flashcards/FlashcardList';
+export { default as DocumentListPage } from './Documents/DocumentListPage';
+export { default as DocumentDetailPage } from './Documents/DocumentDetailPage';
+export { default as QuizResultPage } from './Quizzes/QuizResultPage'
+export { default as QuizTakePage } from './Quizzes/QuizTakePage'
+export { default as Profile } from './Profile/ProfilePage'
