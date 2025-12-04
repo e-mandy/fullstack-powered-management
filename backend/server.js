@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
 // Configuration pour l'accès aux variables d'environnement
-dotenv.congif();
+dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
-import errorHandler from './middleware/errorHandler'
+import {errorHandler} from './middleware/errorHandler.js'
+import connectDB from './config/database.js';
 
+import authRoutes from './routes/authRoutes.js';
 
 // Inialisons le serveur Express
 const app = express();
@@ -25,6 +27,8 @@ app.use(cors({
 app.use(express.json());
 
 // Routes
+app.use('/api/auth', authRoutes);
+
 
 app.use(errorHandler);
 
