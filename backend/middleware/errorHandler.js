@@ -1,3 +1,3 @@
-export const errorHandler = () => {
-
+export const errorHandler = (err) => {
+    //
 }
