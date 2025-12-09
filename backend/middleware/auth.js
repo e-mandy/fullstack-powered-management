@@ -9,7 +9,7 @@ const protect = async (req, res, next) => {
             token = req.headers.authorization.spilt(' ')[1];
         
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            req.user = await User.findById(decoded.id).select('password');
+            req.user = await User.findById(decoded.id).select('-password');
 
             if(!req.user){
                 return res.status(401).json({
@@ -18,7 +18,7 @@ const protect = async (req, res, next) => {
                     statusCode: 401
                 });
             }
-            next()
+            next();
         }catch(err){
             console.log("Auth middleware error: ", err);
 
