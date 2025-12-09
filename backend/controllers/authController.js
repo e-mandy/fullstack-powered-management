@@ -3,7 +3,7 @@ import User from '../models/User.js';
 
 // Génération du JWT token
 const generateToken = (id) => {
-    jwt.sign({id: id}, process.env.JWT_SECRET, {
+    return jwt.sign({id: id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE || '7d'
     });
 };
@@ -96,7 +96,7 @@ export const login = async (req, res, next) => {
                 id: user._id,
                 username: user.username,
                 email: user.email,
-                profileImage: user.profileImage
+                profileImage: user.profileImage,
             },
             token,
             message: "Login successful"
@@ -109,6 +109,18 @@ export const login = async (req, res, next) => {
 // Récupération des informations de profil d'un utilisateur
 export const getProfile = async (req, res, next) => {
     try{
+        const user = await User.findById(req.user._id);
+
+        res.status(200).json({
+            success: true,
+            data: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                createdAt: user.createdAt,
+                updatedAt: user.updatedAt
+            }
+        });
 
     }catch(error){
         next(error)
@@ -118,7 +130,26 @@ export const getProfile = async (req, res, next) => {
 // Mise à jour du profil d'un utilisateur
 export const updateProfile = async (req, res, next) => {
     try{
+        const { username, email, profileImage } = req.body;
 
+        const user = await User.findById(req.user._id);
+
+        if(username) user.username = username;
+        if(email) user.email = email;
+        if(profileImage) user.profileImage = profileImage;
+
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            data: {
+                id: user._id,
+                username: user.username,
+                email: user.email,
+                profileImage: user.profileImage
+            },
+            message: "Profile  updated successfully"
+        })
     }catch(error){
         next(error)
     }
