@@ -32,7 +32,6 @@ export const register = async (req, res, next) => {
             email,
             password
         });
-        console.log(user)
         // Generate token
         const token = generateToken(user._id);
 
@@ -160,35 +159,35 @@ export const changePassword = async (req, res, next) => {
     try{
         const { currentPassword, newPassword } = req.body;
 
-        if(!currentPassword || newPassword){
+        if(!currentPassword || !newPassword){
             res.status(400).json({
                 success: false,
                 error: "Please provide a current and new password",
                 statusCode: 400
             });
 
-            const user = await User.findById(req.user._id).select('+password');
+        }
+        const user = await User.findById(req.user._id).select('+password');
 
-            // On vérifie le password
-            const isMatch = await user.matchPassword(currentPassword);
+        // On vérifie le password
+        const isMatch = await user.matchPassword(currentPassword);
 
-            if(!isMatch){
-                return res.status(401).json({
-                    success: false,
-                    error: "Current password is incorrect",
-                    statusCode: 401,
-                });
-            }
-
-            // On met à jour le password
-            user.password = newPassword;
-            await user.save();
-
-            res.status(200).json({
-                success: true,
-                message: "Password changed successfully"
+        if(!isMatch){
+            return res.status(401).json({
+                success: false,
+                error: "Current password is incorrect",
+                statusCode: 401,
             });
         }
+
+        // On met à jour le password
+        user.password = newPassword;
+        await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Password changed successfully"
+        });
     }catch(error){
         next(error)
     }

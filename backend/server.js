@@ -8,6 +8,7 @@ import {errorHandler} from './middleware/errorHandler.js'
 import connectDB from './config/database.js';
 
 import authRoutes from './routes/authRoutes.js';
+import documentRoutes from './routes/documentRoutes.js'
 
 // Inialisons le serveur Express
 const app = express();
@@ -28,6 +29,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/documents', documentRoutes);
 
 
 app.use(errorHandler);
@@ -48,7 +50,7 @@ app.listen(PORT, () => {
     console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
 });
 
-// process.on('unhandledRejection', (err) => {
-//     console.error(`Error: ${err.message}`);
-//     process.exit(1)
-// })
+process.on('unhandledRejection', (err) => {
+    console.error(`Error: ${err.message}`);
+    process.exit(1)
+})

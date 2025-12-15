@@ -6,7 +6,7 @@ const protect = async (req, res, next) => {
 
     if(req.headers.authorization && req.headers.authorization.startsWith('Bearer')){
         try{
-            token = req.headers.authorization.spilt(' ')[1];
+            token = req.headers.authorization.split(' ')[1];
         
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             req.user = await User.findById(decoded.id).select('-password');
@@ -32,7 +32,7 @@ const protect = async (req, res, next) => {
 
             return res.status(401).json({
                 success: false,
-                error: 'Not authorized, token failed',
+                error: 'Not authorized 1, token failed',
                 statusCode: 401
             });
         }
